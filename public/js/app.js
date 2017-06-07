@@ -5,7 +5,28 @@ const Counter = {
   userDelta: 1,
 
   start: function(){
+  //  sessionStorage.getItem('key', 'value');
+
     this.cacheDOM();
+    if(!localStorage.getItem('outpt')) {
+      console.log('ha');
+      }
+   else{
+     //console.log('got it');
+     if(localStorage.getItem('outpt')){
+       //console.log('really got it');
+       var hee = localStorage.getItem('outpt');
+       console.log('hee is: ',hee);
+       this.count = hee;
+     }
+     else{
+       console.log('did not really get it');
+     }
+
+     console.log(this.junk);
+     //this.outpt.textContent = localStorage.getItem('outpt');
+   }
+    //this.output.value = localStorage.getItem('#output');
     this.bindEvents();
     this.render();
   },
@@ -24,12 +45,14 @@ const Counter = {
       this.userDelta = Number(this.delta_textbox.value);
       this.count += this.userDelta;
       this.render();
+      this.populateStorage(this.count);
     });
     this.minusbutton.addEventListener('click',()=>{
       //this.count -= 1;
       this.userDelta = Number(this.delta_textbox.value);
       this.count -= this.userDelta;
       this.render();
+      this.populateStorage(this.count);
     });
     // this.delta_textbox.addEventListener('onChange',()=>{
     //   this.userDelta -= 1;
@@ -39,6 +62,14 @@ const Counter = {
   render: function (){
     this.outpt.textContent = this.count;
     this.delta_textbox.value = this.userDelta;
+  },
+  populateStorage: function(myCount) {
+    //var j = document.querySelector('#output').value;
+    var j = myCount;
+    //console.log('j is: ',j);
+    //localStorage.setItem('outpt', document.querySelector('#output').value);
+    //console.log('myCount is: ',myCount);
+    localStorage.setItem('outpt', myCount);
   }
 
 
