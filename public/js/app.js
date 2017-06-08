@@ -2,74 +2,74 @@ const Counter = {
 
   rootElement: '#app',
   count: 0,
-  userDelta: 1,
+  userAmount: 1,
 
   start: function(){
-  //  sessionStorage.getItem('key', 'value');
-
     this.cacheDOM();
-    if(!localStorage.getItem('outpt')) {
-      console.log('ha');
-      }
-   else{
-     //console.log('got it');
-     if(localStorage.getItem('outpt')){
-       //console.log('really got it');
-       var hee = localStorage.getItem('outpt');
-       console.log('hee is: ',hee);
-       this.count = hee;
-     }
-     else{
-       console.log('did not really get it');
-     }
-
-     console.log(this.junk);
-     //this.outpt.textContent = localStorage.getItem('outpt');
-   }
-    //this.output.value = localStorage.getItem('#output');
+    this.initializeValues();
     this.bindEvents();
     this.render();
   },
 
   cacheDOM: function(){
-    this.root = document.querySelector('#app');
-    this.addbutton = document.querySelector('#increment');
-    this.minusbutton = document.querySelector('#decrement');
-    this.delta_textbox = document.querySelector('#userDelta');
-    this.outpt = document.querySelector('#output');
+    this.root = document.querySelector(this.rootElement);
+    this.addButton = document.querySelector('.increment');
+    this.minusButton = document.querySelector('.decrement');
+    this.deltaTextbox = document.querySelector('.userDelta');
+    this.outpt = document.querySelector('.output');
   },
 
   bindEvents: function bindEvents(){
-    this.addbutton.addEventListener('click',()=>{
+      this.addButton.addEventListener('click',()=>{
       //this.count+=1;
-      this.userDelta = Number(this.delta_textbox.value);
-      this.count += this.userDelta;
+      //this.userDelta = Number(this.deltaTextbox.value); //this works same as parseInt()
+      this.userAmount = parseInt(this.deltaTextbox.value);
+      this.count += this.userAmount;
       this.render();
-      this.populateStorage(this.count);
+      //this.populateStorage(this.count);
+      this.addStorage(this.outpt,this.count);
+      this.addStorage(this.deltaTextbox,this.userAmount);
     });
-    this.minusbutton.addEventListener('click',()=>{
+    this.minusButton.addEventListener('click',()=>{
       //this.count -= 1;
-      this.userDelta = Number(this.delta_textbox.value);
-      this.count -= this.userDelta;
+      this.userAmount = parseInt(this.deltaTextbox.value);
+      this.count -= this.userAmount;
       this.render();
-      this.populateStorage(this.count);
+      //this.populateStorage(this.count);
+      this.addStorage(this.outpt,this.count);
+      this.addStorage(this.deltaTextbox,this.userAmount);
     });
-    // this.delta_textbox.addEventListener('onChange',()=>{
-    //   this.userDelta -= 1;
-    // });
   },
 
   render: function (){
     this.outpt.textContent = this.count;
-    this.delta_textbox.value = this.userDelta;
+    this.deltaTextbox.value = this.userAmount;
   },
-  populateStorage: function(myCount) {
-    //var j = document.querySelector('#output').value;
-    var j = myCount;
-    //console.log('j is: ',j);
-    //localStorage.setItem('outpt', document.querySelector('#output').value);
-    //console.log('myCount is: ',myCount);
-    localStorage.setItem('outpt', myCount);
+  //this worked but ....sort of hardcoding
+  // populateStorage: function(myCount) {
+  //   //localStorage.setItem('outpt',0);
+  //   localStorage.setItem('outpt', myCount);
+  // },
+  addStorage: function(property,value) {
+    localStorage.setItem(property, value);
+  },
+  retrieveStorage: function(property) {
+    return (parseInt(localStorage.getItem(property)));
+  },
+  initializeValues: function(){
+    if(this.retrieveStorage(this.outpt)){
+      this.count = this.retrieveStorage(this.outpt);
+    }
+    else{
+      this.count = 0;
+    }
+
+    if(this.retrieveStorage(this.userDelta)){
+      this.userAmount = this.retrieveStorage(this.deltaTextbox);
+    }
+    else{
+      this.userAmount = 1;
+    }
   }
 
 
